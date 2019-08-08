@@ -14,7 +14,7 @@ public class PlayerBehavoiur : MonoBehaviour
 
     void Start()
     {
-        
+         
     }
     
     void Update()
@@ -52,7 +52,20 @@ public class PlayerBehavoiur : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && _timeGapBtwBullets >= _fireRate)
         {
             _timeGapBtwBullets = 0f;
-            GameObject _bullet = Instantiate(_bulletPrefab,);
+            GameObject _bullet = Instantiate(_bulletPrefab,transform.position,Quaternion.identity);
+        }
+    }
+    [SerializeField]
+    private int _playerLifes = 3;
+    [SerializeField]
+    private EnemySpawning _enemySpawning;
+    public void DamagePlayer()
+    {
+        _playerLifes--;
+        if (_playerLifes == 0)
+        {
+            _enemySpawning.OnPlayerDeath();
+            Destroy(this.gameObject);
         }
     }
 }
