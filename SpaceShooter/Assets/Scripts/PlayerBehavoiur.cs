@@ -6,16 +6,19 @@ public class PlayerBehavoiur : MonoBehaviour
 {
     [SerializeField]
     private float _playerMovementSpeed = 5f;
-
     [SerializeField]
     private GameObject _bulletPrefab;
     [SerializeField]
+    private GameObject _tripleBulletPrefab;
+    [SerializeField]
     private float _fireRate = 0.1f;
+    [SerializeField]
+    GameObject _shieldObject;
 
-    void Start()
-    {
-         
-    }
+    bool tripleShootEnabled;
+    bool speedBoostEnabled;
+    bool shieldEnabled;
+   
     
     void Update()
     {
@@ -27,9 +30,11 @@ public class PlayerBehavoiur : MonoBehaviour
     {
 
         float _horizontal = Input.GetAxis("Horizontal");
-        float _vertical = Input.GetAxis("Vertical");
+        float _vertical = -Input.GetAxis("Vertical");
         Vector3 _direction = new Vector3(_horizontal, _vertical, 0f);
+
         transform.Translate(_direction * Time.deltaTime * _playerMovementSpeed);
+    
 
         float _xValue = transform.position.x;
         if (_xValue >= 9)
@@ -52,21 +57,75 @@ public class PlayerBehavoiur : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && _timeGapBtwBullets >= _fireRate)
         {
             _timeGapBtwBullets = 0f;
-            GameObject _bullet = Instantiate(_bulletPrefab,transform.position,Quaternion.identity);
+            GameObject _bullet;
+            if (tripleShootEnabled == true)
+            {
+                _bullet = Instantiate(_tripleBulletPrefab) as GameObject;
+            }
+           else
+            {
+                _bullet = Instantiate(_bulletPrefab) as GameObject;
+            }
+            _bullet.transform.position = transform.position + new Vector3(0f, 0.85f, 0f);
         }
     }
     [SerializeField]
     private int _playerLifes = 3;
     [SerializeField]
-    private EnemySpawning _enemySpawning;
+    private SpawingManager _spawningManager;
     public void DamagePlayer()
     {
+        if (shieldEnabled)
+        {
+            shieldEnabled = false;
+            Disable_PowerUp_Shield();
+            return;
+        }
         _playerLifes--;
         if (_playerLifes == 0)
         {
-            _enemySpawning.OnPlayerDeath();
+            _spawningManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void PowerUp_TripleShoot()
+    {
+        tripleShootEnabled = true;
+        StartCoroutine(Disable_PowerUp_TripleShoot());
+    }
+
+    IEnumerator Disable_PowerUp_TripleShoot()
+    {
+        yield return new WaitForSeconds(5f);
+        tripleShootEnabled = false;
+    }
+
+    public void PowerUp_SpeedBoost()
+    {
+        speedBoostEnabled = true;
+        _playerMovementSpeed *= 2;
+        StartCoroutine(Disable_PowerUp_SpeedBoost());
+    }
+
+    IEnumerator Disable_PowerUp_SpeedBoost()
+    {
+        yield return new WaitForSeconds(5f);
+        _playerMovementSpeed /= 2;
+        speedBoostEnabled = false;
+    }
+
+    public void PowerUp_Shield()
+    {
+        _shieldObject.SetActive(true);
+        shieldEnabled = true;
+
+    }
+
+    void Disable_PowerUp_Shield()
+    {
+        shieldEnabled = false;
+        _shieldObject.SetActive(false);
     }
 }
 

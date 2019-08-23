@@ -19,8 +19,15 @@ public class BulletBehaviour : MonoBehaviour
 
         if(transform.position.y >= 7f)
         {
-           
-            Destroy(this.gameObject);
+
+            if (this.transform.parent != null)
+            {
+                Destroy(this.transform.parent.gameObject);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }

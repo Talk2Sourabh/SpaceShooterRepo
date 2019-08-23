@@ -26,11 +26,19 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Bullet"))
         {
-            Destroy(other.gameObject);
+            if (other.transform.parent != null )
+            {
+                Destroy(other.transform.parent.gameObject);
+            }
+            else
+            {
+                Destroy(other.gameObject);
+            }
+            
             Destroy(this.gameObject);
 
         }
@@ -38,6 +46,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerBehavoiur>().DamagePlayer();
+            Destroy(this.gameObject);
         }
     }
 }
