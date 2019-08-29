@@ -5,13 +5,15 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     float _enemySpeed = 2f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    
+    PlayerBehavoiur _playerBehaviour;
+    
+
+    private void Start()
+    {
+        _playerBehaviour = GameObject.FindObjectOfType<PlayerBehavoiur>();
+    }
     void Update()
     {
         EnemyMovement();
@@ -38,7 +40,8 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 Destroy(other.gameObject);
             }
-            
+
+            _playerBehaviour.UpdateScore(10);
             Destroy(this.gameObject);
 
         }

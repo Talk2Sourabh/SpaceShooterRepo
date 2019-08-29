@@ -18,7 +18,8 @@ public class PlayerBehavoiur : MonoBehaviour
     bool tripleShootEnabled;
     bool speedBoostEnabled;
     bool shieldEnabled;
-   
+
+    private int _score = 0 ;
     
     void Update()
     {
@@ -73,6 +74,11 @@ public class PlayerBehavoiur : MonoBehaviour
     private int _playerLifes = 3;
     [SerializeField]
     private SpawingManager _spawningManager;
+    [SerializeField]
+    private UIManager _uiManager;
+
+    [SerializeField]
+    private GameManager _gameManager;
     public void DamagePlayer()
     {
         if (shieldEnabled)
@@ -82,10 +88,14 @@ public class PlayerBehavoiur : MonoBehaviour
             return;
         }
         _playerLifes--;
+        _uiManager.UpdatePlayerLives(_playerLifes);
         if (_playerLifes == 0)
         {
             _spawningManager.OnPlayerDeath();
+            _uiManager.ShowGameOver();
+            _gameManager.GameOver();
             Destroy(this.gameObject);
+            
         }
     }
 
@@ -126,6 +136,12 @@ public class PlayerBehavoiur : MonoBehaviour
     {
         shieldEnabled = false;
         _shieldObject.SetActive(false);
+    }
+
+    public void UpdateScore(int score)
+    {
+        _score += score;
+        _uiManager.UpdateScoreText(_score);
     }
 }
 
