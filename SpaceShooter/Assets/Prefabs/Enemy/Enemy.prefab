@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cd0024dea08cf41a40449fc849a75b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explosionPrefab: {fileID: 2931532041414031711, guid: fedf4d46f98f5164d86b699d8e88dfe5,
+    type: 3}
 --- !u!212 &742993772329903631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -71,6 +73,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

@@ -8,11 +8,14 @@ public class EnemyBehaviour : MonoBehaviour
 
     
     PlayerBehavoiur _playerBehaviour;
-    
+    [SerializeField]
+    private GameObject _explosionPrefab;
+    private Collider2D _collider2D;
 
     private void Start()
     {
         _playerBehaviour = GameObject.FindObjectOfType<PlayerBehavoiur>();
+        _collider2D = GetComponent<Collider2D>();
     }
     void Update()
     {
@@ -42,14 +45,32 @@ public class EnemyBehaviour : MonoBehaviour
             }
 
             _playerBehaviour.UpdateScore(10);
-            Destroy(this.gameObject);
+            GenerateExplosionEffect();
+            Destroy(this.gameObject,1.2f);
 
         }
 
         else if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerBehavoiur>().DamagePlayer();
-            Destroy(this.gameObject);
+            GenerateExplosionEffect();
+            Destroy(this.gameObject, 1.2f);
         }
     }
+
+    void GenerateExplosionEffect()
+    {
+        GameObject temp = Instantiate(_explosionPrefab);
+        temp.transform.position = this.transform.position;
+        temp.transform.SetParent(this.transform);
+
+        RemoveEnemyComponent();
+    }
+
+    void RemoveEnemyComponent()
+    {
+        _enemySpeed = 0f;
+        _collider2D.enabled = false;
+    }
 }
+

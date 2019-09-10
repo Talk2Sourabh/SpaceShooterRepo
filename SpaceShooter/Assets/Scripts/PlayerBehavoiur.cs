@@ -15,12 +15,19 @@ public class PlayerBehavoiur : MonoBehaviour
     [SerializeField]
     GameObject _shieldObject;
 
+
     bool tripleShootEnabled;
     bool speedBoostEnabled;
     bool shieldEnabled;
 
     private int _score = 0 ;
-    
+
+    private Animator _anim;
+
+    private void Start()
+    {
+        _anim = GetComponent<Animator>();
+    }
     void Update()
     {
         CalclulateMovement();
@@ -79,6 +86,13 @@ public class PlayerBehavoiur : MonoBehaviour
 
     [SerializeField]
     private GameManager _gameManager;
+
+    [SerializeField]
+    private GameObject _rightEngineFailure;
+    [SerializeField]
+    private GameObject _leftEngineFailure;
+    
+
     public void DamagePlayer()
     {
         if (shieldEnabled)
@@ -88,13 +102,24 @@ public class PlayerBehavoiur : MonoBehaviour
             return;
         }
         _playerLifes--;
+
+        if (_playerLifes == 2)
+        {
+            _rightEngineFailure.SetActive(true);
+        }
+        else if (_playerLifes == 1)
+        {
+            _leftEngineFailure.SetActive(true);
+        }
+
         _uiManager.UpdatePlayerLives(_playerLifes);
         if (_playerLifes == 0)
         {
             _spawningManager.OnPlayerDeath();
             _uiManager.ShowGameOver();
             _gameManager.GameOver();
-            Destroy(this.gameObject);
+            _anim.SetBool("GetExplode",true);
+            Destroy(this.gameObject,0.5f);
             
         }
     }
