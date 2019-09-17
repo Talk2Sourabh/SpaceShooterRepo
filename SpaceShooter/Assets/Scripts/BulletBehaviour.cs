@@ -6,18 +6,28 @@ public class BulletBehaviour : MonoBehaviour
 {
     [SerializeField]
     float _bulletSpeed = 20f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
+    bool _isEnemyBullet;
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.up * Time.deltaTime * _bulletSpeed); 
+        if (!_isEnemyBullet)
+        {
+            MoveUp();
+        }
+        else
+        {
+            MoveDown();
+        }
+    }
 
-        if(transform.position.y >= 7f)
+    void MoveUp()
+    {
+        
+        transform.Translate(Vector3.up * Time.deltaTime * _bulletSpeed);
+
+        if (transform.position.y >= 7f)
         {
 
             if (this.transform.parent != null)
@@ -28,6 +38,39 @@ public class BulletBehaviour : MonoBehaviour
             {
                 Destroy(this.gameObject);
             }
+        }
+    }
+    void MoveDown()
+    {
+
+        transform.Translate(Vector3.down * Time.deltaTime * _bulletSpeed);
+
+        if (transform.position.y <= -7f)
+        {
+
+            if (this.transform.parent != null)
+            {
+                Destroy(this.transform.parent.gameObject);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public void AssiagnBulletAsEnemyBullet()
+    {
+        _isEnemyBullet = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && _isEnemyBullet)
+        {
+            Debug.Log(transform.GetSiblingIndex());
+            other.GetComponent<PlayerBehavoiur>().DamagePlayer();
+            Destroy(this.gameObject);
         }
     }
 }

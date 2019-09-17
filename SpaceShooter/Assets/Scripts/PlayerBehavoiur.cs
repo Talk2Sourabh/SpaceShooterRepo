@@ -24,6 +24,9 @@ public class PlayerBehavoiur : MonoBehaviour
 
     private Animator _anim;
 
+    [SerializeField]
+    AudioClip _bulletClip;
+
     private void Start()
     {
         _anim = GetComponent<Animator>();
@@ -70,11 +73,12 @@ public class PlayerBehavoiur : MonoBehaviour
             {
                 _bullet = Instantiate(_tripleBulletPrefab) as GameObject;
             }
-           else
+            else
             {
                 _bullet = Instantiate(_bulletPrefab) as GameObject;
             }
             _bullet.transform.position = transform.position + new Vector3(0f, 0.85f, 0f);
+            AudioSource.PlayClipAtPoint(_bulletClip, this.transform.position);
         }
     }
     [SerializeField]
@@ -113,7 +117,7 @@ public class PlayerBehavoiur : MonoBehaviour
         }
 
         _uiManager.UpdatePlayerLives(_playerLifes);
-        if (_playerLifes == 0)
+        if (_playerLifes <= 0)
         {
             _spawningManager.OnPlayerDeath();
             _uiManager.ShowGameOver();

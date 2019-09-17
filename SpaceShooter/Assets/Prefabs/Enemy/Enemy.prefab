@@ -48,6 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _explosionPrefab: {fileID: 2931532041414031711, guid: fedf4d46f98f5164d86b699d8e88dfe5,
     type: 3}
+  _explosionClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _bulletPrefab: {fileID: 7830796995865828156, guid: 8d4cb8d3430c863479014bd41a1d8e09,
+    type: 3}
+  _timeBetweenBullet: 3
 --- !u!212 &742993772329903631
 SpriteRenderer:
   m_ObjectHideFlags: 0

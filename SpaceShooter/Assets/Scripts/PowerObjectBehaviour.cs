@@ -6,6 +6,10 @@ public class PowerObjectBehaviour : MonoBehaviour
 {
     [SerializeField]
     int _playerIndentifyNumber;
+
+    [SerializeField]
+    AudioClip _powerClip;
+   
     private void Update()
     {
         if (transform.position.y <= -6.13f)
@@ -30,6 +34,7 @@ public class PowerObjectBehaviour : MonoBehaviour
                     other.GetComponent<PlayerBehavoiur>().PowerUp_SpeedBoost();
                     break;
             }
+            AudioSource.PlayClipAtPoint(_powerClip, this.transform.position);
             Destroy(this.gameObject);
         }
     }
